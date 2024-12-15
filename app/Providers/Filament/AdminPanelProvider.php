@@ -71,7 +71,6 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->plugins([
-                FilamentUsersPlugin::make(),
                 FilamentShieldPlugin::make(),
                 DebuggerPlugin::make(),
                 FilamentExceptionsPlugin::make()

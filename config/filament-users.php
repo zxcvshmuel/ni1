@@ -17,7 +17,7 @@ return [
      * ---------------------------------------------
      * The Group name of the resource.
      */
-    'group' => 'Settings',
+    'group' => 'ניהול משתמשים',
 
     /**
      * ---------------------------------------------
@@ -83,13 +83,13 @@ return [
      */
     'resource' => [
         'table' => [
-            'class' => \TomatoPHP\FilamentUsers\Resources\UserResource\Table\UserTable::class,
+            'class' => \App\Filament\Resources\UserResource\Table\CustomUserTable::class,
             'filters' => \TomatoPHP\FilamentUsers\Resources\UserResource\Table\UserFilters::class,
             'actions' => \TomatoPHP\FilamentUsers\Resources\UserResource\Table\UserActions::class,
             'bulkActions' => \TomatoPHP\FilamentUsers\Resources\UserResource\Table\UserBulkActions::class,
         ],
         'form' => [
-            'class' => \TomatoPHP\FilamentUsers\Resources\UserResource\Form\UserForm::class,
+            'class' => \App\Filament\Resources\UserResource\Form\CustomUserForm::class,
         ],
         'infolist' => [
             'class' => \TomatoPHP\FilamentUsers\Resources\UserResource\Infolist\UserInfoList::class,

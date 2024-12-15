@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('credits')->default(0)->after('password');
             $table->string('phone', 20)->nullable()->after('credits');
             $table->string('language', 5)->default('he')->after('phone');
+            $table->boolean('is_active')->default(true)->after('language');
             $table->softDeletes();
         });
     }

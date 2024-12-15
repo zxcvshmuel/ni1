@@ -22,6 +22,7 @@ class User extends Authenticatable implements FilamentUser
         'credits',
         'phone',
         'language',
+        'is_active',
     ];
 
     protected $hidden = [
@@ -34,6 +35,7 @@ class User extends Authenticatable implements FilamentUser
         'password' => 'hashed',
         'credits' => 'integer',
     ];
+    
 
     public function orders()
     {
