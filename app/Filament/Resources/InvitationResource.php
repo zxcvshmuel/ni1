@@ -15,18 +15,18 @@ use Illuminate\Support\Str;
 class InvitationResource extends Resource
 {
     protected static ?string $model = Invitation::class;
-    
+
     protected static ?string $navigationIcon = 'heroicon-o-envelope';
-    
+
     protected static ?string $navigationGroup = 'אירועים';
-    
+
     protected static ?int $navigationSort = 1;
-    
+
     public static function getModelLabel(): string
     {
         return 'הזמנה';
     }
-    
+
     public static function getPluralModelLabel(): string
     {
         return 'הזמנות';
@@ -107,18 +107,25 @@ class InvitationResource extends Resource
                                 Forms\Components\Select::make('template_id')
                                     ->label('תבנית')
                                     ->required()
-                                    ->relationship('template', 'name->he')
+                                    ->relationship(
+                                        'template',
+                                        titleAttribute: 'name',
+                                        modifyQueryUsing: fn(Builder $query) => $query->select(['id', 'name'])
+                                    )
+                                    ->getOptionLabelFromRecordUsing(fn($record) => $record->name['he'] ?? '')
                                     ->preload()
-                                    ->searchable()
-                                    ->columnSpanFull(),
+                                    ->searchable(),
 
-                                // Effects and Songs
                                 Forms\Components\Select::make('effects')
                                     ->label('אפקטים')
                                     ->multiple()
-                                    ->relationship('effects', 'name->he')
-                                    ->preload()
-                                    ->columnSpanFull(),
+                                    ->relationship(
+                                        'effects',
+                                        titleAttribute: 'name',
+                                        modifyQueryUsing: fn(Builder $query) => $query->select(['id', 'name'])
+                                    )
+                                    ->getOptionLabelFromRecordUsing(fn($record) => $record->name['he'] ?? '')
+                                    ->preload(),
 
                                 Forms\Components\Select::make('songs')
                                     ->label('שירים')
@@ -168,7 +175,7 @@ class InvitationResource extends Resource
                 Tables\Columns\TextColumn::make('event_type')
                     ->label('סוג')
                     ->badge()
-                    ->formatStateUsing(fn (string $state): string => match($state) {
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
                         'wedding' => 'חתונה',
                         'bar_mitzvah' => 'בר מצווה',
                         'bat_mitzvah' => 'בת מצווה',
@@ -238,11 +245,11 @@ class InvitationResource extends Resource
                         return $query
                             ->when(
                                 $data['from'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('event_date', '>=', $date),
+                                fn(Builder $query, $date): Builder => $query->whereDate('event_date', '>=', $date),
                             )
                             ->when(
                                 $data['until'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('event_date', '<=', $date),
+                                fn(Builder $query, $date): Builder => $query->whereDate('event_date', '<=', $date),
                             );
                     }),
 
@@ -261,13 +268,13 @@ class InvitationResource extends Resource
                         ->label('עריכה'),
                     Tables\Actions\Action::make('preview')
                         ->label('תצוגה מקדימה')
-                        ->url(fn (Invitation $record): string => route('invitations.preview', $record))
+                        ->url(fn(Invitation $record): string => route('invitations.preview', $record))
                         ->openUrlInNewTab()
                         ->icon('heroicon-o-eye'),
                     Tables\Actions\Action::make('copy_link')
                         ->label('העתק קישור')
                         ->icon('heroicon-o-link')
-                        ->action(fn (Invitation $record) => "navigator.clipboard.writeText('" . route('invitations.show', $record->slug) . "')"),
+                        ->action(fn(Invitation $record) => "navigator.clipboard.writeText('" . route('invitations.show', $record->slug) . "')"),
                     Tables\Actions\DeleteAction::make()
                         ->label('מחיקה'),
                 ]),
@@ -279,14 +286,14 @@ class InvitationResource extends Resource
             ])
             ->defaultSort('created_at', 'desc');
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [

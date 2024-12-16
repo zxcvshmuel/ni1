@@ -46,7 +46,7 @@ class SettingResource extends Resource
                             ->label('שם')
                             ->required()
                             ->maxLength(255)
-                            ->unique(ignoreRecord: true, columns: ['group', 'name']),
+                            ->unique(ignoreRecord: true),
 
                         Forms\Components\Toggle::make('locked')
                             ->label('נעול')
