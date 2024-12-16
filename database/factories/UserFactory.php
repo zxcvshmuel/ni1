@@ -59,9 +59,9 @@ class TemplateCategoryFactory extends Factory
     {
         $name = $this->faker->words(2, true);
         return [
-                                'name' => json_encode([
-                        'he' => "קטגורית " . $name,
-                        'en' => ucfirst($name)
+            'name' => [
+                'he' => "קטגורית " . $name,
+                'en' => ucfirst($name)
             ],
             'slug' => Str::slug($name),
             'parent_id' => null,
@@ -183,7 +183,7 @@ class EffectFactory extends Factory
 
     protected function getDefaultSettings(string $type): array
     {
-        return match($type) {
+        return match ($type) {
             'animation' => [
                 'duration' => '1s',
                 'delay' => '0s',
@@ -238,7 +238,7 @@ class InvitationFactory extends Factory
     {
         $eventTypes = ['wedding', 'bar_mitzvah', 'bat_mitzvah', 'birthday', 'engagement'];
         $eventDate = $this->faker->dateTimeBetween('+1 month', '+6 months');
-        
+
         return [
             'user_id' => \App\Models\User::factory(),
             'template_id' => \App\Models\Template::factory(),
@@ -297,7 +297,7 @@ class AutomatedMessageFactory extends Factory
     {
         $types = ['rsvp_invitation', 'rsvp_reminder', 'event_reminder', 'thank_you'];
         $type = $this->faker->randomElement($types);
-        
+
         return [
             'type' => $type,
             'name' => [
@@ -315,7 +315,7 @@ class AutomatedMessageFactory extends Factory
                 ],
             ],
             'settings' => [
-                'send_time' => match($type) {
+                'send_time' => match ($type) {
                     'rsvp_invitation' => 'immediately',
                     'rsvp_reminder' => '7_days_before',
                     'event_reminder' => '1_day_before',
@@ -328,7 +328,7 @@ class AutomatedMessageFactory extends Factory
 
     protected function getHebrewName(string $type): string
     {
-        return match($type) {
+        return match ($type) {
             'rsvp_invitation' => 'הזמנה למענה',
             'rsvp_reminder' => 'תזכורת למענה',
             'event_reminder' => 'תזכורת לאירוע',
@@ -338,7 +338,7 @@ class AutomatedMessageFactory extends Factory
 
     protected function getEnglishName(string $type): string
     {
-        return match($type) {
+        return match ($type) {
             'rsvp_invitation' => 'RSVP Invitation',
             'rsvp_reminder' => 'RSVP Reminder',
             'event_reminder' => 'Event Reminder',
@@ -348,7 +348,7 @@ class AutomatedMessageFactory extends Factory
 
     protected function getHebrewSubject(string $type): string
     {
-        return match($type) {
+        return match ($type) {
             'rsvp_invitation' => 'הזמנה ל{title}',
             'rsvp_reminder' => 'תזכורת: אישור הגעה ל{title}',
             'event_reminder' => 'מחר: {title}',
@@ -358,7 +358,7 @@ class AutomatedMessageFactory extends Factory
 
     protected function getEnglishSubject(string $type): string
     {
-        return match($type) {
+        return match ($type) {
             'rsvp_invitation' => 'Invitation to {title}',
             'rsvp_reminder' => 'Reminder: RSVP for {title}',
             'event_reminder' => 'Tomorrow: {title}',
@@ -368,7 +368,7 @@ class AutomatedMessageFactory extends Factory
 
     protected function getHebrewBody(string $type): string
     {
-        return match($type) {
+        return match ($type) {
             'rsvp_invitation' => 'שלום {name},\n\nהוזמנת ל{title} שיתקיים בתאריך {date}.\nנשמח לדעת האם תוכל/י להגיע:\n{rsvp_link}',
             'rsvp_reminder' => 'שלום {name},\n\nטרם אישרת הגעה ל{title}.\nנשמח לדעת האם תוכל/י להגיע:\n{rsvp_link}',
             'event_reminder' => 'שלום {name},\n\nרצינו להזכיר שמחר מתקיים {title} ב{location}.\nנתראה!',
@@ -378,7 +378,7 @@ class AutomatedMessageFactory extends Factory
 
     protected function getEnglishBody(string $type): string
     {
-        return match($type) {
+        return match ($type) {
             'rsvp_invitation' => 'Hello {name},\n\nYou are invited to {title} on {date}.\nPlease let us know if you can attend:\n{rsvp_link}',
             'rsvp_reminder' => 'Hello {name},\n\nWe haven\'t received your RSVP for {title} yet.\nPlease let us know if you can attend:\n{rsvp_link}',
             'event_reminder' => 'Hello {name},\n\nJust a reminder that {title} is tomorrow at {location}.\nSee you there!',
@@ -422,11 +422,11 @@ class MessageLogFactory extends Factory
     {
         $type = $this->faker->randomElement(['email', 'sms', 'whatsapp']);
         $status = $this->faker->randomElement(['pending', 'sent', 'failed']);
-        
+
         return [
             'invitation_id' => \App\Models\Invitation::factory(),
             'message_id' => \App\Models\AutomatedMessage::factory(),
-            'recipient' => match($type) {
+            'recipient' => match ($type) {
                 'email' => $this->faker->email(),
                 'sms', 'whatsapp' => $this->faker->phoneNumber(),
             },

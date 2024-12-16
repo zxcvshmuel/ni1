@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\User;
+use Livewire\Livewire;
 use App\Policies\UserPolicy;
 use Illuminate\Support\Facades\Gate;
+use App\Livewire\Invitation\PublicView;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
